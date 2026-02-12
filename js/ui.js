@@ -272,14 +272,20 @@ export function renderUpgrades(state, bonuses, onPurchase) {
             upgradeEl.dataset.upgradeId = upgrade.id;
         }
 
-        // Update state classes
-        upgradeEl.className = 'upgrade-item'; // Reset classes
+        // Determine what state class should be applied
+        let stateClass = '';
         if (isMaxed) {
-            upgradeEl.classList.add('upgrade-maxed');
+            stateClass = 'upgrade-maxed';
         } else if (isLocked) {
-            upgradeEl.classList.add('upgrade-locked');
+            stateClass = 'upgrade-locked';
         } else if (purchaseCheck.canPurchase) {
-            upgradeEl.classList.add('upgrade-affordable');
+            stateClass = 'upgrade-affordable';
+        }
+
+        // Only update classes if they've changed (to preserve hover state)
+        const currentStateClass = upgradeEl.className.replace('upgrade-item', '').trim();
+        if (currentStateClass !== stateClass) {
+            upgradeEl.className = 'upgrade-item' + (stateClass ? ' ' + stateClass : '');
         }
 
         // Build content parts
