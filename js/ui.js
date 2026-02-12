@@ -275,7 +275,9 @@ export function renderUpgrades(state, bonuses, onPurchase) {
 
         // Determine what state class should be applied
         let stateClass = '';
-        if (isMaxed) {
+        if (isMaxed && upgrade.effectType === 'unlockPrestige') {
+            stateClass = 'upgrade-affordable';
+        } else if (isMaxed) {
             stateClass = 'upgrade-maxed';
         } else if (isLocked) {
             stateClass = 'upgrade-locked';
@@ -290,9 +292,10 @@ export function renderUpgrades(state, bonuses, onPurchase) {
         }
 
         // Build content parts
-        const checkbox = isMaxed ? '[x]' : '[ ]';
+        const isPrestigeReady = isMaxed && upgrade.effectType === 'unlockPrestige';
+        const checkbox = isPrestigeReady ? '[>]' : (isMaxed ? '[x]' : '[ ]');
         const countDisplay = upgrade.maxPurchases > 1 ? ` (${purchaseCount}/${upgrade.maxPurchases})` : '';
-        const costDisplay = isMaxed ? 'MAXED' : formatDollars(finalCost);
+        const costDisplay = isPrestigeReady ? 'READY' : (isMaxed ? 'MAXED' : formatDollars(finalCost));
 
         if (isNewElement) {
             // Create new element structure
@@ -319,7 +322,10 @@ export function renderUpgrades(state, bonuses, onPurchase) {
 
         // Always update click handler - uses onclick to replace any existing handler
         // This ensures upgrades that transition from locked to unlocked become clickable
-        if (!isMaxed && !isLocked) {
+        // Prestige upgrades stay clickable when maxed so the player can re-trigger prestige
+        if (isMaxed && upgrade.effectType === 'unlockPrestige') {
+            upgradeEl.onclick = () => onPurchase(upgrade.id);
+        } else if (!isMaxed && !isLocked) {
             upgradeEl.onclick = () => onPurchase(upgrade.id);
         } else {
             upgradeEl.onclick = null;
