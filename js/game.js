@@ -229,6 +229,7 @@ function tick() {
 
     // Update UI
     render(gameState, cachedProductionRates, cachedBonuses);
+    renderUpgrades(gameState, cachedBonuses, handleUpgradePurchase);
 
     // Auto-save check
     if (now - lastSaveTime >= AUTO_SAVE_INTERVAL_MS) {
