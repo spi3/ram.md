@@ -1,12 +1,12 @@
 # AGENTS.md — Project-Wide Agent Behavior Requirements
 
-This document defines the behavioral standards, constraints, and conventions that all AI agents must follow when working on the RAM Clicker project. It applies to every agent type (implementation, planning, review, research) regardless of the task at hand.
+This document defines the behavioral standards, constraints, and conventions that all AI agents must follow when working on the ram.md project. It applies to every agent type (implementation, planning, review, research) regardless of the task at hand.
 
 ---
 
 ## 1. Project Context
 
-RAM Clicker is a satirical idle/clicker browser game built with vanilla HTML, CSS, and JavaScript. There is no backend, no build step, no framework, and no external dependencies. All game state persists in `localStorage`. The visual aesthetic mimics a markdown text editor.
+ram.md is a satirical idle/clicker browser game built with vanilla HTML, CSS, and JavaScript. There is no backend, no build step, no framework, and no external dependencies. All game state persists in `localStorage`. The visual aesthetic mimics a markdown text editor.
 
 **Canonical requirements live in `/REQUIREMENTS.md`.** All agents must treat that document as the single source of truth for product scope, gameplay mechanics, visual style, and technical constraints.
 
@@ -37,7 +37,7 @@ If a task seems to require violating any of these constraints, stop and ask the 
 Agents must respect the established project structure:
 
 ```
-ram-clicker/
+ram.md/
 ├── index.html              # Single-page entry point
 ├── css/
 │   └── style.css           # All styling
@@ -243,4 +243,4 @@ Individual agent definition files in `.claude/agents/` may specify behavior that
 
 *Document Version: 1.0*
 *Created: 2026-02-11*
-*Applies to: All agents operating on the RAM Clicker project*
+*Applies to: All agents operating on the ram.md project*

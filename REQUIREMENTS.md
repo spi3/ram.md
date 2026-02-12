@@ -1,12 +1,12 @@
-# Product Requirements Document: RAM Clicker
+# Product Requirements Document: ram.md
 
 ## 1. Overview & Vision
 
 ### Project Name
-**RAM Clicker**
+**ram.md**
 
 ### Elevator Pitch
-RAM Clicker is a satirical idle/clicker game that parodies the current AI boom and global RAM shortage. Players begin as a humble startup hand-crafting RAM sticks and progressively build a memory empire, eventually training AI models that achieve sentience and simulate the entire universe — at which point the cycle begins anew.
+ram.md is a satirical idle/clicker game that parodies the current AI boom and global RAM shortage. Players begin as a humble startup hand-crafting RAM sticks and progressively build a memory empire, eventually training AI models that achieve sentience and simulate the entire universe — at which point the cycle begins anew.
 
 ### Vision Statement
 Create a humorous, accessible browser-based idle game that entertains players while offering tongue-in-cheek commentary on the tech industry's insatiable hunger for compute resources. The game should be immediately playable, progressively engaging, and deliver genuine laughs through absurdist flavor text and escalating technological absurdity.
@@ -387,7 +387,7 @@ The game should appear as if it's being played inside a markdown document or pla
 #### Layout Principles
 ```
 +--------------------------------------------------+
-|  # RAM Clicker                                   |
+|  # ram.md                                   |
 |  > Simulation Depth: 0                           |
 +--------------------------------------------------+
 |                                                  |
@@ -646,7 +646,7 @@ The following features are candidates for future development:
 
 #### Recommended File Structure
 ```
-ram-clicker/
+ram.md/
 ├── index.html          # Single page application
 ├── css/
 │   └── style.css       # All styling

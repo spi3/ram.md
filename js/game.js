@@ -61,7 +61,7 @@ let cachedProductionRates = null;
  * Initializes the game
  */
 async function init() {
-    console.log('RAM Clicker initializing...');
+    console.log('ram.md initializing...');
 
     // Initialize UI elements
     initUI();
@@ -100,7 +100,7 @@ async function init() {
     rotateHeadline();
 
     isInitialized = true;
-    console.log('RAM Clicker initialized');
+    console.log('ram.md initialized');
 }
 
 /**
@@ -114,7 +114,7 @@ async function loadHeadlines() {
     } catch (error) {
         console.error('Failed to load headlines:', error);
         headlines = {
-            1: ['Welcome to RAM Clicker!'],
+            1: ['Welcome to ram.md!'],
             2: ['Keep clicking!'],
             3: ['You\'re doing great!'],
             4: ['Almost there!'],
