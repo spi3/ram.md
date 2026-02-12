@@ -236,8 +236,16 @@ export function renderUpgrades(state, bonuses, onPurchase) {
     const availableUpgrades = getAvailableUpgrades(state.currentStage);
     const costReduction = bonuses.costReduction;
 
-    // Clear existing upgrades
-    elements.upgradesList.innerHTML = '';
+    // Track which upgrade IDs should exist
+    const upgradeIds = new Set(availableUpgrades.map(u => u.id));
+
+    // Remove upgrades that shouldn't be here (e.g., from stage changes)
+    const existingElements = elements.upgradesList.querySelectorAll('.upgrade-item');
+    existingElements.forEach(el => {
+        if (!upgradeIds.has(el.dataset.upgradeId)) {
+            el.remove();
+        }
+    });
 
     for (const upgrade of availableUpgrades) {
         const purchaseCount = state.upgrades[upgrade.id] || 0;
@@ -254,12 +262,18 @@ export function renderUpgrades(state, bonuses, onPurchase) {
         const isMaxed = purchaseCount >= upgrade.maxPurchases;
         const isLocked = purchaseCheck.reason === 'prerequisite';
 
-        // Create upgrade element
-        const upgradeEl = document.createElement('div');
-        upgradeEl.className = 'upgrade-item';
-        upgradeEl.dataset.upgradeId = upgrade.id;
+        // Find or create upgrade element
+        let upgradeEl = elements.upgradesList.querySelector(`[data-upgrade-id="${upgrade.id}"]`);
+        const isNewElement = !upgradeEl;
 
-        // Add state classes
+        if (isNewElement) {
+            upgradeEl = document.createElement('div');
+            upgradeEl.className = 'upgrade-item';
+            upgradeEl.dataset.upgradeId = upgrade.id;
+        }
+
+        // Update state classes
+        upgradeEl.className = 'upgrade-item'; // Reset classes
         if (isMaxed) {
             upgradeEl.classList.add('upgrade-maxed');
         } else if (isLocked) {
@@ -268,31 +282,40 @@ export function renderUpgrades(state, bonuses, onPurchase) {
             upgradeEl.classList.add('upgrade-affordable');
         }
 
-        // Build upgrade HTML
+        // Build content parts
         const checkbox = isMaxed ? '[x]' : '[ ]';
         const countDisplay = upgrade.maxPurchases > 1 ? ` (${purchaseCount}/${upgrade.maxPurchases})` : '';
         const costDisplay = isMaxed ? 'MAXED' : formatDollars(finalCost);
 
-        upgradeEl.innerHTML = `
-            <div class="upgrade-header">
-                <span class="upgrade-checkbox">${checkbox}</span>
-                <span class="upgrade-name">${upgrade.name}${countDisplay}</span>
-                <span class="upgrade-cost">${costDisplay}</span>
-            </div>
-            <div class="upgrade-flavor">*"${upgrade.flavorText}"*</div>
-            <div class="upgrade-effect">${getEffectDescription(upgrade)}</div>
-        `;
+        if (isNewElement) {
+            // Create new element structure
+            upgradeEl.innerHTML = `
+                <div class="upgrade-header">
+                    <span class="upgrade-checkbox">${checkbox}</span>
+                    <span class="upgrade-name">${upgrade.name}${countDisplay}</span>
+                    <span class="upgrade-cost">${costDisplay}</span>
+                </div>
+                <div class="upgrade-flavor">*"${upgrade.flavorText}"*</div>
+                <div class="upgrade-effect">${getEffectDescription(upgrade)}</div>
+            `;
 
-        // Add click handler if purchasable
-        if (!isMaxed && !isLocked) {
-            upgradeEl.addEventListener('click', () => {
-                // Don't check purchaseCheck here - it's stale!
-                // Let the game logic do a fresh check when clicked
-                onPurchase(upgrade.id);
-            });
+            // Add click handler once for new elements
+            if (!isMaxed && !isLocked) {
+                upgradeEl.addEventListener('click', () => {
+                    onPurchase(upgrade.id);
+                });
+            }
+            elements.upgradesList.appendChild(upgradeEl);
+        } else {
+            // Update existing element - only change the dynamic parts
+            const checkboxEl = upgradeEl.querySelector('.upgrade-checkbox');
+            const nameEl = upgradeEl.querySelector('.upgrade-name');
+            const costEl = upgradeEl.querySelector('.upgrade-cost');
+
+            if (checkboxEl) checkboxEl.textContent = checkbox;
+            if (nameEl) nameEl.textContent = upgrade.name + countDisplay;
+            if (costEl) costEl.textContent = costDisplay;
         }
-
-        elements.upgradesList.appendChild(upgradeEl);
     }
 }
 
