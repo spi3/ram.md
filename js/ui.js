@@ -286,9 +286,9 @@ export function renderUpgrades(state, bonuses, onPurchase) {
         // Add click handler if purchasable
         if (!isMaxed && !isLocked) {
             upgradeEl.addEventListener('click', () => {
-                if (purchaseCheck.canPurchase) {
-                    onPurchase(upgrade.id, finalCost);
-                }
+                // Don't check purchaseCheck here - it's stale!
+                // Let the game logic do a fresh check when clicked
+                onPurchase(upgrade.id);
             });
         }
 

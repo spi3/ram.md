@@ -229,7 +229,6 @@ function tick() {
 
     // Update UI
     render(gameState, cachedProductionRates, cachedBonuses);
-    renderUpgrades(gameState, cachedBonuses, handleUpgradePurchase);
 
     // Auto-save check
     if (now - lastSaveTime >= AUTO_SAVE_INTERVAL_MS) {
@@ -330,7 +329,7 @@ function handleClick() {
 /**
  * Handles upgrade purchase
  */
-function handleUpgradePurchase(upgradeId, cost) {
+function handleUpgradePurchase(upgradeId) {
     const upgrade = getUpgrade(upgradeId);
     if (!upgrade) return;
 
@@ -347,9 +346,13 @@ function handleUpgradePurchase(upgradeId, cost) {
         return;
     }
 
+    // Calculate cost fresh (don't use stale values from UI)
+    const baseCost = calculateUpgradeCost(upgrade, purchaseCount);
+    const finalCost = Math.floor(baseCost * (1 - cachedBonuses.costReduction));
+
     // Deduct cost
     const resourceKey = upgrade.costResource || 'dollars';
-    gameState.resources[resourceKey] -= cost;
+    gameState.resources[resourceKey] -= finalCost;
 
     // Record purchase
     gameState.upgrades[upgradeId] = purchaseCount + 1;
