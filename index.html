@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAM Clicker</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Header -->
+        <header id="game-header">
+            <h1># RAM Clicker</h1>
+            <div id="simulation-depth">> Simulation Depth: <span id="depth-value">0</span></div>
+        </header>
+
+        <!-- Welcome Back Modal -->
+        <div id="welcome-back-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>## Welcome Back!</h2>
+                <div id="welcome-back-message"></div>
+                <button id="welcome-back-close" class="action-button">[CONTINUE]</button>
+            </div>
+        </div>
+
+        <!-- Prestige Modal -->
+        <div id="prestige-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>## The Simulation Begins Anew</h2>
+                <div id="prestige-message"></div>
+                <div class="prestige-buttons">
+                    <button id="prestige-confirm" class="action-button">[BEGIN NEW SIMULATION]</button>
+                    <button id="prestige-cancel" class="action-button">[NOT YET]</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main id="game-main">
+            <!-- Stage Banner -->
+            <section id="stage-banner">
+                <h2 id="stage-title">## Stage 1: Garage Startup</h2>
+                <blockquote id="stage-flavor">"You found some old memory chips at a garage sale. How hard can it be?"</blockquote>
+            </section>
+
+            <!-- Resources Panel -->
+            <section id="resources-panel">
+                <h3>### Resources</h3>
+                <div id="resources-list">
+                    <div class="resource-item" id="resource-product">
+                        <span class="resource-name">- RAM Sticks:</span>
+                        <span class="resource-value" id="product-count">0</span>
+                        <span class="resource-rate" id="product-rate">(+0/sec)</span>
+                    </div>
+                    <div class="resource-item" id="resource-dollars">
+                        <span class="resource-name">- Dollars:</span>
+                        <span class="resource-value" id="dollars-count">$0</span>
+                        <span class="resource-rate" id="dollars-rate">(+$0/sec)</span>
+                    </div>
+                    <div class="resource-item hidden" id="resource-compute">
+                        <span class="resource-name">- Compute Units:</span>
+                        <span class="resource-value" id="compute-count">0</span>
+                        <span class="resource-rate" id="compute-rate">(+0/sec)</span>
+                    </div>
+                    <div class="resource-item hidden" id="resource-intelligence">
+                        <span class="resource-name">- Intelligence Points:</span>
+                        <span class="resource-value" id="intelligence-count">0</span>
+                        <span class="resource-rate" id="intelligence-rate">(+0/sec)</span>
+                    </div>
+                    <div class="resource-item hidden" id="resource-consciousness">
+                        <span class="resource-name">- Consciousness Cycles:</span>
+                        <span class="resource-value" id="consciousness-count">0</span>
+                        <span class="resource-rate" id="consciousness-rate">(+0/sec)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Bar -->
+            <section id="progress-section">
+                <div id="progress-bar-container">
+                    <span id="progress-bar">[>...................]</span>
+                    <span id="progress-text">0/100 to next sale</span>
+                </div>
+            </section>
+
+            <!-- Action Area -->
+            <section id="action-area">
+                <button id="main-action-button" class="action-button">> [SOLDER RAM STICK]</button>
+                <div id="click-power">+<span id="click-power-value">1</span> per click</div>
+            </section>
+
+            <hr class="section-divider">
+
+            <!-- Upgrades Panel -->
+            <section id="upgrades-panel">
+                <h3>### Upgrades</h3>
+                <div id="upgrades-list">
+                    <!-- Upgrades will be dynamically populated -->
+                </div>
+            </section>
+
+            <hr class="section-divider">
+
+            <!-- Statistics Panel -->
+            <section id="stats-panel">
+                <h3>### Statistics</h3>
+                <div id="stats-list">
+                    <div class="stat-item">| Total Clicks | <span id="stat-clicks">0</span> |</div>
+                    <div class="stat-item">| Total Earned | <span id="stat-earned">$0</span> |</div>
+                    <div class="stat-item">| Play Time | <span id="stat-playtime">0:00:00</span> |</div>
+                    <div class="stat-item">| Prestige Count | <span id="stat-prestige">0</span> |</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- News Ticker -->
+        <footer id="news-ticker">
+            <span class="ticker-label">NEWS:</span>
+            <span id="ticker-content">Welcome to RAM Clicker! Click to begin your memory empire.</span>
+        </footer>
+    </div>
+
+    <script type="module" src="js/game.js"></script>
+</body>
+</html>
