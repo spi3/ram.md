@@ -345,6 +345,10 @@ function handleUpgradePurchase(upgradeId) {
     );
 
     if (!purchaseCheck.canPurchase) {
+        // Allow re-triggering prestige modal for already-purchased prestige upgrade
+        if (upgrade.effectType === 'unlockPrestige' && purchaseCheck.reason === 'maxed') {
+            showPrestigePrompt();
+        }
         return;
     }
 
