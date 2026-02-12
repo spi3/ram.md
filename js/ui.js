@@ -305,13 +305,6 @@ export function renderUpgrades(state, bonuses, onPurchase) {
                 <div class="upgrade-flavor">*"${upgrade.flavorText}"*</div>
                 <div class="upgrade-effect">${getEffectDescription(upgrade)}</div>
             `;
-
-            // Add click handler once for new elements
-            if (!isMaxed && !isLocked) {
-                upgradeEl.addEventListener('click', () => {
-                    onPurchase(upgrade.id);
-                });
-            }
             elements.upgradesList.appendChild(upgradeEl);
         } else {
             // Update existing element - only change the dynamic parts
@@ -322,6 +315,14 @@ export function renderUpgrades(state, bonuses, onPurchase) {
             if (checkboxEl) checkboxEl.textContent = checkbox;
             if (nameEl) nameEl.textContent = upgrade.name + countDisplay;
             if (costEl) costEl.textContent = costDisplay;
+        }
+
+        // Always update click handler - uses onclick to replace any existing handler
+        // This ensures upgrades that transition from locked to unlocked become clickable
+        if (!isMaxed && !isLocked) {
+            upgradeEl.onclick = () => onPurchase(upgrade.id);
+        } else {
+            upgradeEl.onclick = null;
         }
     }
 }
