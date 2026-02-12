@@ -6,6 +6,7 @@
 import { getStage, getVisibleResources, getPrestigeNarrative } from './stages.js';
 import {
     getAvailableUpgrades,
+    getUpgrade,
     calculateUpgradeCost,
     canPurchaseUpgrade,
     getEffectDescription
@@ -321,6 +322,63 @@ export function renderUpgrades(state, bonuses, onPurchase) {
             if (checkboxEl) checkboxEl.textContent = checkbox;
             if (nameEl) nameEl.textContent = upgrade.name + countDisplay;
             if (costEl) costEl.textContent = costDisplay;
+        }
+    }
+}
+
+/**
+ * Lightweight affordability update for the game loop.
+ * Only updates CSS classes and cost text on existing upgrade elements
+ * without recreating DOM structure, preserving hover and click state.
+ */
+export function updateUpgradeAffordability(state, bonuses) {
+    if (!elements) return;
+
+    const costReduction = bonuses.costReduction;
+    const upgradeEls = elements.upgradesList.querySelectorAll('.upgrade-item');
+
+    for (const upgradeEl of upgradeEls) {
+        const upgradeId = upgradeEl.dataset.upgradeId;
+        if (!upgradeId) continue;
+
+        const upgrade = getUpgrade(upgradeId);
+        if (!upgrade) continue;
+
+        const purchaseCount = state.upgrades[upgrade.id] || 0;
+        const isMaxed = purchaseCount >= upgrade.maxPurchases;
+        if (isMaxed) continue; // No changes needed for maxed upgrades
+
+        const purchaseCheck = canPurchaseUpgrade(
+            upgrade,
+            purchaseCount,
+            state.resources,
+            state.upgrades,
+            costReduction
+        );
+
+        const isLocked = purchaseCheck.reason === 'prerequisite';
+
+        let stateClass = '';
+        if (isLocked) {
+            stateClass = 'upgrade-locked';
+        } else if (purchaseCheck.canPurchase) {
+            stateClass = 'upgrade-affordable';
+        }
+
+        const currentStateClass = upgradeEl.className.replace('upgrade-item', '').trim();
+        if (currentStateClass !== stateClass) {
+            upgradeEl.className = 'upgrade-item' + (stateClass ? ' ' + stateClass : '');
+        }
+
+        // Update cost display
+        const baseCost = calculateUpgradeCost(upgrade, purchaseCount);
+        const finalCost = Math.floor(baseCost * (1 - costReduction));
+        const costEl = upgradeEl.querySelector('.upgrade-cost');
+        if (costEl) {
+            const costText = formatDollars(finalCost);
+            if (costEl.textContent !== costText) {
+                costEl.textContent = costText;
+            }
         }
     }
 }

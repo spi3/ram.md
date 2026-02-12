@@ -17,6 +17,7 @@ import {
     initUI,
     render,
     renderUpgrades,
+    updateUpgradeAffordability,
     updateTicker,
     showWelcomeBackModal,
     showPrestigeModal,
@@ -229,7 +230,7 @@ function tick() {
 
     // Update UI
     render(gameState, cachedProductionRates, cachedBonuses);
-    renderUpgrades(gameState, cachedBonuses, handleUpgradePurchase);
+    updateUpgradeAffordability(gameState, cachedBonuses);
 
     // Auto-save check
     if (now - lastSaveTime >= AUTO_SAVE_INTERVAL_MS) {
